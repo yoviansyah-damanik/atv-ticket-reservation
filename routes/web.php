@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::fallback(function () {
+//     return view();
+// });
+
+require_once 'web/auth.php';
+require_once 'web/frontend.php';
+require_once 'web/backend.php';
