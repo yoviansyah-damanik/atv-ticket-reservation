@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', UserStatusType::getValues())
                 ->default(UserStatusType::Active);
             $table->softDeletes();
+            $table->rememberToken();
             $table->timestamps();
         });
     }
