@@ -52,7 +52,7 @@ class User extends Authenticatable
     protected function imagePath(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->image ? asset($this->image) : asset('branding-assets/img/user-default.png')
+            get: fn () => $this->image ? asset('/storage/' . $this->image) : asset('branding-assets/img/user-default.png')
         );
     }
 

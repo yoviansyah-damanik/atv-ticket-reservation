@@ -29,7 +29,8 @@ Route::middleware('auth', 'role:User')
                 Route::prefix('account')
                     ->as('account.')
                     ->group(function () {
-                        Route::put('/profile', 'update_profile')->name('profile.update');
+                        Route::put('/account', 'update_account')->name('update');
+                        Route::put('/password', 'update_password')->name('update.password');
                         Route::get('/history', 'history')->name('history');
                         Route::get('/history/{reservation:id}', 'show_history')->name('history.show');
                         Route::put('/history/{reservation:id}', 'update_payment')->name('history.show.payment');

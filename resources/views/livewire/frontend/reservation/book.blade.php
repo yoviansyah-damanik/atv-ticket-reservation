@@ -7,7 +7,8 @@
             <div class="mb-3">
                 <label class='form-label' for="orderer_name">{{ __('Orderer Name') }} <span
                         class="text-danger">(*)</span></label>
-                <input type="text" wire:model.live='orderer_name' class="form-control"
+                <input type="text" wire:model.live='orderer_name'
+                    class="form-control  @error('orderer_name') is-invalid @enderror"
                     placeholder="{{ __('Orderer Name') }}">
                 @error('orderer_name')
                     <div class="mt-1 small text-danger">
@@ -19,7 +20,8 @@
                 <div wire:ignore>
                     <label class='form-label' for="date">{{ __('Date') }} <span
                             class="text-danger">(*)</span></label>
-                    <input wire:model.live='date' class="form-control datepicker"
+                    <input wire:model.live='date' type='text'
+                        class="form-control datepicker @error('date') is-invalid @enderror"
                         style="background-color:#fff; cursor:pointer;" placeholder="{{ __('Select a date') }}" readonly>
                 </div>
                 @error('date')
@@ -31,7 +33,8 @@
             <div class="mb-3">
                 <label class='form-label' for="time">{{ __('Expectation Time') }} <span
                         class="text-danger">(*)</span></label>
-                <select wire:model.live='time' class="form-select" placeholder="{{ __('Expecation Time') }}">
+                <select wire:model.live='time' class="form-select @error('time') is-invalid @enderror"
+                    placeholder="{{ __('Expecation Time') }}">
                     @foreach ($times as $item)
                         <option value="{{ $item }}">{{ $item }} WIB</option>
                     @endforeach

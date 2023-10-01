@@ -113,7 +113,7 @@
     <img style="float:left" src="{{ asset('branding-assets/img/logo-min.png') }}" alt="Logo" class="logo">
     <div style="float:right" class="w-100 text-end">
         <h5>
-            {{ __('Income Report for :year', ['year' => $year]) }}
+            {{ __('Revenue Report for :year', ['year' => $year]) }}
         </h5>
     </div>
 
@@ -123,7 +123,7 @@
                 <th width=30px>#</th>
                 <th>{{ __('Month') }}</th>
                 <th width=300px>
-                    {{ __('Total Income') }}
+                    {{ __('Total Revenue') }}
                 </th>
             </thead>
 
@@ -132,15 +132,15 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $item['month_name'] }}</td>
-                        <td class="text-end">{{ PriceHelper::idr($item['income'], 0, true) }}</td>
+                        <td class="text-end">{{ PriceHelper::idr($item['revenue'], 0, true) }}</td>
                     </tr>
                 @endforeach
                 <tr class="font-bold">
                     <td class="text-end" colspan="2">
-                        {{ __('Total Income') }}
+                        {{ __('Total Revenue') }}
                     </td>
                     <td class="text-end">
-                        {{ PriceHelper::idr(collect($data)->sum(fn($q) => $q['income']), 0, true) }}
+                        {{ PriceHelper::idr(collect($data)->sum(fn($q) => $q['revenue']), 0, true) }}
                     </td>
                 </tr>
             </tbody>

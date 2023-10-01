@@ -92,7 +92,7 @@
                                                         <div class="font-weight-medium"> {{ $package->title }}</div>
                                                         <div class="text-muted">
                                                             <span class="text-reset fst-italic">
-                                                                {{ __('Number of reservations: :number', ['number' => 1]) }}
+                                                                {{ __('Number of reservations: :number', ['number' => $package->reservations->count()]) }}
                                                             </span>
                                                         </div>
                                                     </div>

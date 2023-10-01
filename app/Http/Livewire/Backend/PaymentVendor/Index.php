@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Backend\PaymentVendor;
 use Exception;
 use Throwable;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use App\Models\PaymentVendor;
 use Illuminate\Support\Facades\Storage;
@@ -58,6 +59,13 @@ class Index extends Component
     {
         try {
             $payment_vendor = PaymentVendor::findOrFail($this->selection_id);
+
+            if ($payment_vendor->payments->count() > 0)
+                return  $this->alert(
+                    'warning',
+                    __('Attention!'),
+                    ['text' => __('The :feature cannot be deleted once it has been used.', ['feature' => __('Payment Vendor')])]
+                );
 
             Storage::delete('public/' . $payment_vendor->image);
             $payment_vendor->delete();

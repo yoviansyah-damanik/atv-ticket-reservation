@@ -202,9 +202,9 @@
                                         href="{{ route('dashboard.report.reservation') }}">
                                         {{ __('Reservation Report') }}
                                     </a>
-                                    <a class="dropdown-item @if (request()->routeIs('dashboard.report.income')) active @endif"
-                                        href="{{ route('dashboard.report.income') }}">
-                                        {{ __('Income Report') }}
+                                    <a class="dropdown-item @if (request()->routeIs('dashboard.report.revenue')) active @endif"
+                                        href="{{ route('dashboard.report.revenue') }}">
+                                        {{ __('Revenue Report') }}
                                     </a>
                                 </div>
                             </div>

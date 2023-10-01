@@ -37,19 +37,6 @@
                 </div>
             @enderror
         </div>
-        <div class="mb-3">
-            <label class="form-label" for="edit_role">{{ __('Role') }} <span class="text-danger">(*)</span></label>
-            <select class="form-select" id="edit_role" wire:model='role'>
-                @foreach ($roles as $role)
-                    <option value="{{ $role->name }}">{{ $role->name }}</option>
-                @endforeach
-            </select>
-            @error('role')
-                <div class="mt-1 small text-danger">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
 
         <span class="text-danger">(*) {{ __('Required') }}</span>
     </div>

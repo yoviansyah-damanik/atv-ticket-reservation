@@ -62,10 +62,10 @@ class ReportHelper
             ->output();
     }
 
-    public static function income_report_print($data, $year)
+    public static function revenue_report_print($data, $year)
     {
         return PDF::loadView(
-            'printout.exe.income_report',
+            'printout.exe.revenue_report',
             [
                 'data' => $data,
                 'year' => $year,

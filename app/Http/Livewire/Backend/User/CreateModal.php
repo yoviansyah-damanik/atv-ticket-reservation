@@ -18,7 +18,7 @@ class CreateModal extends Component
     use LivewireAlert, WithFileUploads;
 
     protected $listeners = ['refresh_create_form'];
-    public $name, $email, $username, $password, $re_password, $role;
+    public $name, $email, $username, $password, $re_password;
 
     public function refresh_create_form()
     {
@@ -27,9 +27,7 @@ class CreateModal extends Component
 
     public function render(): View
     {
-        $roles = Role::whereNotIn('name', ['User', 'Administrator'])
-            ->get();
-        return view('livewire.backend.user.create-modal', compact('roles'));
+        return view('livewire.backend.user.create-modal');
     }
 
     public function rules(): array
@@ -41,12 +39,8 @@ class CreateModal extends Component
             'password' => [
                 'required',
                 'string',
-                Password::min(8)->letters()->numbers()->uncompromised()
+                Password::min(8)->letters()->numbers()
             ],
-            'role' => ['required', Rule::in(
-                Role::whereNotIn('name', ['User', 'Administrator'])
-                    ->get()->pluck('name')->toArray()
-            )],
             're_password' => 'required|same:password'
         ];
     }
@@ -59,7 +53,6 @@ class CreateModal extends Component
             'email' => __('Email'),
             'password' => __('Password'),
             're_password' => __('Re-Password'),
-            'role' => __('Role')
         ];
     }
 
@@ -75,7 +68,7 @@ class CreateModal extends Component
             $new_user->password = bcrypt($this->password);
             $new_user->save();
 
-            $new_user->assignRole($this->role);
+            $new_user->assignRole('Administrator');
 
             $this->reset();
             $this->alert(

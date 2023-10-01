@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Backend\Report\Income;
+namespace App\Http\Livewire\Backend\Report\Revenue;
 
 use Carbon\Carbon;
 use Livewire\Component;
@@ -31,8 +31,8 @@ class Preview extends Component
                 return [
                     'month_id' => $q,
                     'month_name' => Carbon::createFromFormat('m', $q)->translatedFormat('F'),
-                    'income' => $reservations
-                        ->where('status', ReservationType::Completed)
+                    'revenue' => $reservations
+                        ->whereIn('status', [ReservationType::ReadyForAction, ReservationType::Completed])
                         ->filter(function ($r) use ($start_of_month, $end_of_month) {
                             if (Carbon::parse($r->date)->between($start_of_month, $end_of_month))
                                 return $r;
@@ -43,7 +43,7 @@ class Preview extends Component
             });
         }
 
-        return view('livewire.backend.report.income.preview');
+        return view('livewire.backend.report.revenue.preview');
     }
 
     public function set_preview($year)
@@ -59,10 +59,10 @@ class Preview extends Component
     public function print()
     {
 
-        $filename = Carbon::now()->timestamp . ' - ' . __('Income Report for :year', ['year' => $this->year]) . '.pdf';
+        $filename = Carbon::now()->timestamp . ' - ' . __('Revenue Report for :year', ['year' => $this->year]) . '.pdf';
         return response()->streamDownload(
             function () {
-                print(ReportHelper::income_report_print($this->data, $this->year));
+                print(ReportHelper::revenue_report_print($this->data, $this->year));
             },
             $filename
         );

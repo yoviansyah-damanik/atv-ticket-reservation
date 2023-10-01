@@ -128,7 +128,7 @@
         </div>
     </div>
 
-    @if ($reservation->status == 'waiting_for_payment' && $reservation?->payment?->status != 'wait_for_confirmation')
+    @if ($reservation->status == 'waiting_for_payment' && $reservation?->payment?->status != 'waiting_for_confirmation')
         <div class="card">
             <div class="card-body">
                 <h5>
@@ -201,7 +201,7 @@
                 </form>
             </div>
         </div>
-    @elseif($reservation->status == 'waiting_for_payment' && $reservation?->payment?->status == 'wait_for_confirmation')
+    @elseif($reservation->status == 'waiting_for_payment' && $reservation?->payment?->status == 'waiting_for_confirmation')
         <div class="alert alert-warning d-flex align-items-center" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                 class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img"

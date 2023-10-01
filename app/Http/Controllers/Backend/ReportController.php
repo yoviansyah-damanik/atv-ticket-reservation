@@ -18,8 +18,8 @@ class ReportController extends Controller
         return view('backend.pages.report.reservation');
     }
 
-    public function income(): View
+    public function revenue(): View
     {
-        return view('backend.pages.report.income');
+        return view('backend.pages.report.revenue');
     }
 }

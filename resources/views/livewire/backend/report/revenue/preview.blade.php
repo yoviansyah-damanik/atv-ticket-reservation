@@ -31,7 +31,7 @@
 
         <div class="card">
             <div class="card-body">
-                @include('printout.preview.income', [
+                @include('printout.preview.revenue', [
                     'data' => $data,
                     'year' => $year,
                     'period' => $period,

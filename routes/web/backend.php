@@ -58,8 +58,8 @@ Route::middleware('auth', 'role:Administrator')
                             ->name('.unit');
                         Route::get('/reservation', 'reservation')
                             ->name('.reservation');
-                        Route::get('/income', 'income')
-                            ->name('.income');
+                        Route::get('/revenue', 'revenue')
+                            ->name('.revenue');
                     });
             });
     });

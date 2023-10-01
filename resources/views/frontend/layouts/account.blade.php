@@ -31,33 +31,35 @@
 
     @include('frontend.partials.navbar')
 
-    <div class="container container-padding">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="account-box">
-                            <img src="{{ Auth::user()->image_path }}" alt="User Image">
-                            <h5>{{ Auth::user()->name }}</h5>
-                            <p class="username">{{ Auth::user()->username }}</p>
-                            <p class="email">{{ Auth::user()->email }}</p>
+    <div class="container-xxl container-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="account-box">
+                                <img src="{{ Auth::user()->image_path }}" alt="User Image">
+                                <h5>{{ Auth::user()->name }}</h5>
+                                <p class="username">{{ Auth::user()->username }}</p>
+                                <p class="email">{{ Auth::user()->email }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-8">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link  @if (request()->routeIs('account.history*')) active @endif" aria-current="page"
-                            href="{{ route('account.history') }}">{{ __('History') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if (request()->routeIs('account')) active @endif" aria-current="page"
-                            href="{{ route('account') }}">{{ __('Account') }}</a>
-                    </li>
-                </ul>
-                <div class="py-3 px-2">
-                    @yield('content')
+                <div class="col-lg-8">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link  @if (request()->routeIs('account.history*')) active @endif" aria-current="page"
+                                href="{{ route('account.history') }}">{{ __('History') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if (request()->routeIs('account')) active @endif" aria-current="page"
+                                href="{{ route('account') }}">{{ __('Account') }}</a>
+                        </li>
+                    </ul>
+                    <div class="py-3 px-2">
+                        @yield('content')
+                    </div>
                 </div>
             </div>
         </div>

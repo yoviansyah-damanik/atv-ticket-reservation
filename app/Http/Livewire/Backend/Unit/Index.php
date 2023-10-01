@@ -6,6 +6,7 @@ use Exception;
 use Throwable;
 use App\Models\Unit;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -58,6 +59,12 @@ class Index extends Component
     {
         try {
             $unit = Unit::findOrFail($this->selection_id);
+            if ($unit->unit_usages->count() > 0)
+                return  $this->alert(
+                    'warning',
+                    __('Attention!'),
+                    ['text' => __('The :feature cannot be deleted once it has been used.', ['feature' => __('Unit')])]
+                );
 
             Storage::delete('public/' . $unit->image);
             $unit->delete();

@@ -1,6 +1,6 @@
-@extends('backend.layouts.app', ['layout' => 'fluid'])
+@extends('backend.layouts.app')
 
-@section('title', __('Income Report'))
+@section('title', __('Account'))
 @section('content')
     <div>
         {{-- Page header  --}}
@@ -10,11 +10,8 @@
                     <div class="col">
                         {{-- Page pre-title  --}}
                         <h2 class="page-title">
-                            {{ __('Income Report') }}
+                            {{ __('Account') }}
                         </h2>
-                        <p class="text-muted small">
-                            {{ __('See the income report on :1.', ['1' => config('app.name')]) }}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -23,11 +20,11 @@
         <div class="page-body">
             <div class="container-xl">
                 <div class="row row-cards">
-                    <div class="col-lg-3">
-                        <livewire:backend.report.income.filter />
+                    <div class="col-lg-6">
+                        <livewire:backend.account.profile />
                     </div>
-                    <div class="col-lg-9">
-                        <livewire:backend.report.income.preview />
+                    <div class="col-lg-6">
+                        <livewire:backend.account.password />
                     </div>
                 </div>
             </div>

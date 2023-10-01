@@ -15,7 +15,7 @@ class Payment extends Model
     protected function proofPath(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->proof_of_payment ? asset($this->proof_of_payment) : asset('branding-assets/img/proof-default.png')
+            get: fn () => $this->proof_of_payment ? asset('/storage/' . $this->proof_of_payment) : asset('branding-assets/img/proof-default.png')
         );
     }
 

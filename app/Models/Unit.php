@@ -20,8 +20,8 @@ class Unit extends Model
         );
     }
 
-    public function reservations(): HasMany
+    public function unit_usages(): HasMany
     {
-        return $this->hasMany(ReservationDetail::class);;
+        return $this->hasMany(UnitUsage::class);
     }
 }

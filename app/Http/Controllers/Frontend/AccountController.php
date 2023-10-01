@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Enums\ReservationType;
 use Exception;
 use Throwable;
+use App\Models\User;
 use App\Models\Payment;
 use Illuminate\View\View;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\PaymentVendor;
-use Illuminate\Support\Facades\DB;
+use App\Enums\ReservationType;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AccountRequest;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\PasswordRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Reservation\PaymentRequest;
 
@@ -22,21 +24,6 @@ class AccountController extends Controller
     public function index(): View
     {
         return view('frontend.pages.account.index');
-    }
-
-    public function update_account(): RedirectResponse
-    {
-        return back();
-    }
-
-    public function profile(): View
-    {
-        return view('frontend.pages.account.profile.index');
-    }
-
-    public function update_profile(): RedirectResponse
-    {
-        return back();
     }
 
     public function history(): View
@@ -90,6 +77,43 @@ class AccountController extends Controller
             $reservation->update(['status' => ReservationType::Canceled]);
 
             Alert::success(__('Successfully!'), __('The :feature was successfully updated.', ['feature' => __('Reservation')]));
+            return back();
+        } catch (Exception $e) {
+            Alert::warning(__('Something went wrong!'), $e->getMessage());
+            return back();
+        } catch (Throwable $e) {
+            Alert::warning(__('Something went wrong!'), $e->getMessage());
+            return back();
+        }
+    }
+
+    public function update_account(AccountRequest $request)
+    {
+        try {
+            $user = User::find(Auth::id());
+            $user->username = $request->username;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            Alert::success(__('Successfully!'), __('The :feature was successfully updated.', ['feature' => __('Account')]));
+            return back();
+        } catch (Exception $e) {
+            Alert::warning(__('Something went wrong!'), $e->getMessage());
+            return back();
+        } catch (Throwable $e) {
+            Alert::warning(__('Something went wrong!'), $e->getMessage());
+            return back();
+        }
+    }
+    public function update_password(PasswordRequest $request)
+    {
+        try {
+            $user = User::find(Auth::id());
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            Alert::success(__('Successfully!'), __('The :feature was successfully updated.', ['feature' => __('Account')]));
             return back();
         } catch (Exception $e) {
             Alert::warning(__('Something went wrong!'), $e->getMessage());

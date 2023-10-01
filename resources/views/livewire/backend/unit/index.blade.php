@@ -94,7 +94,7 @@
                                                         </div>
                                                         <div class="text-muted">
                                                             <span class="text-reset fst-italic">
-                                                                {{ __('Number used: :number', ['number' => 1]) }}
+                                                                {{ __('Number used: :number', ['number' => $unit->unit_usages->count()]) }}
                                                             </span>
                                                         </div>
                                                     </div>

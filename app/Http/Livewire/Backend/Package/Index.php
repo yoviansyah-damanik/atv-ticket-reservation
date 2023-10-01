@@ -57,6 +57,12 @@ class Index extends Component
     {
         try {
             $package = Package::findOrFail($this->selection_id);
+            if ($package->reservations->count() > 0)
+                return  $this->alert(
+                    'warning',
+                    __('Attention!'),
+                    ['text' => __('The :feature cannot be deleted once it has been used.', ['feature' => __('Package')])]
+                );
 
             Storage::delete('public/' . $package->image);
             $package->delete();

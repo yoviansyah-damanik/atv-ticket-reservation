@@ -18,13 +18,11 @@ class EditModal extends Component
     use LivewireAlert, WithFileUploads;
 
     protected $listeners = ['refresh_edit_form'];
-    public $user_id, $name, $email, $username, $password, $re_password, $role;
+    public $user_id, $name, $email, $username, $password, $re_password;
 
     public function render()
     {
-        $roles = Role::whereNotIn('name', ['User', 'Administrator'])
-            ->get();
-        return view('livewire.backend.user.edit-modal', compact('roles'));
+        return view('livewire.backend.user.edit-modal');
     }
 
     public function rules(): array
@@ -33,10 +31,6 @@ class EditModal extends Component
             'username' => 'required|string|alpha_dash|min:8|max:16|unique:users,username,' . $this->user_id,
             'name' => 'required|string|max:200',
             'email' => 'required|email:dns|unique:users,email,' . $this->user_id,
-            'role' => ['required', Rule::in(
-                Role::whereNotIn('name', ['User', 'Administrator'])
-                    ->get()->pluck('name')->toArray()
-            )],
         ];
     }
 
@@ -46,7 +40,6 @@ class EditModal extends Component
             'username' => __('Username'),
             'name' => __('Full Name'),
             'email' => __('Email'),
-            'role' => __('Role')
         ];
     }
 
@@ -58,7 +51,6 @@ class EditModal extends Component
         $this->username = $user->username;
         $this->name = $user->name;
         $this->email = $user->email;
-        $this->role = $user->role_name;
     }
 
     public function update_user(): void
@@ -66,16 +58,11 @@ class EditModal extends Component
         $this->validate();
 
         try {
-            $new_user = User::find($this->user_id);
-            $new_user->username = $this->username;
-            $new_user->name = $this->name;
-            $new_user->email = $this->email;
-            $new_user->save();
-
-            DB::table('model_has_roles')->where('model_id', $this->user_id)
-                ->delete();
-
-            $new_user->assignRole($this->role);
+            $user = User::find($this->user_id);
+            $user->username = $this->username;
+            $user->name = $this->name;
+            $user->email = $this->email;
+            $user->save();
 
             $this->alert(
                 'success',

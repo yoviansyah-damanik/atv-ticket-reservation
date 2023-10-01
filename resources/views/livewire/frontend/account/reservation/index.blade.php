@@ -65,7 +65,8 @@
                             </button>
                         @endif
 
-                        <a href="{{ route('account.history.show', $reservation->id) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ route('account.history.show', $reservation->id) }}"
+                            class="btn btn-sm btn-primary mt-1 mt-lg-0">
                             {{ __('View Reservation') }}
                         </a>
                     </div>

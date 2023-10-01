@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Backend\Report\Income;
+namespace App\Http\Livewire\Backend\Report\Revenue;
 
 use Exception;
 use Throwable;
@@ -22,7 +22,7 @@ class Filter extends Component
 
     public function render()
     {
-        return view('livewire.backend.report.income.filter');
+        return view('livewire.backend.report.revenue.filter');
     }
 
     public function updated($attribute)
