@@ -159,7 +159,8 @@
             </div>
             <div class="row g-4">
                 @foreach ($packages as $package)
-                    <div class="col-lg-4 col-6 wow fadeInUp" data-wow-delay="{{ 0.1 + ($loop->iteration - 1) * 0.2 }}s">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp"
+                        data-wow-delay="{{ 0.1 + ($loop->iteration - 1) * 0.2 }}s">
                         <div class="store-item position-relative text-center">
                             <img class="img-fluid" src="{{ $package->image_path }}" alt="">
                             <div class="p-4">
