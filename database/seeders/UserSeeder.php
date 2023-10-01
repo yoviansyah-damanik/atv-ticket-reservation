@@ -27,26 +27,5 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password')
         ])
             ->assignRole('Administrator');
-        User::create([
-            'username' => 'owner',
-            'email' => 'owner@example.com',
-            'name' => "Lorem ipsum dolor sit",
-            'password' => bcrypt('password')
-        ])
-            ->assignRole('Owner');
-        User::create([
-            'username' => 'guide',
-            'email' => 'guide@example.com',
-            'name' => "Lorem ipsum dolor sit",
-            'password' => bcrypt('password')
-        ])
-            ->assignRole('Guide');
-        User::create([
-            'username' => 'finance',
-            'email' => 'finance@example.com',
-            'name' => "Lorem ipsum dolor sit",
-            'password' => bcrypt('password')
-        ])
-            ->assignRole('Finance');
     }
 }

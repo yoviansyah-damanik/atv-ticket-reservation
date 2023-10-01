@@ -26,7 +26,7 @@ class EditModal extends Component
     {
         return [
             'image' => 'nullable|image|max:1024',
-            'title' => 'required|string|max:200',
+            'title' => 'required|string|min:8|max:200',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:200'
         ];

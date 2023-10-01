@@ -4,4 +4,9 @@
 <script src="{{ asset('frontend-assets/lib/easing/easing.min.js') }}"></script>
 <script src="{{ asset('frontend-assets/lib/waypoints/waypoints.min.js') }}"></script>
 <script src="{{ asset('frontend-assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script>
 <script src="{{ asset('frontend-assets/js/main.js') }}"></script>
+@livewireScripts
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<x-livewire-alert::scripts />
+@stack('scripts')

@@ -15,10 +15,14 @@
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <link href="{{ asset('frontend-assets/lib/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend-assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend-assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend-assets/css/style.css') }}" rel="stylesheet">
+    @livewireStyles
+    @stack('styles')
 </head>
 
 <body>

@@ -31,8 +31,8 @@ class CreateModal extends Component
     {
         return [
             'image' => 'nullable|image|max:1024',
-            'name' => 'required|string|max:200',
-            'register_number' => 'required|string|max:200',
+            'name' => 'required|string|min:5|max:200',
+            'register_number' => 'required|string|min:5|max:200',
             'description' => 'nullable|string|max:200'
         ];
     }

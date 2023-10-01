@@ -15,8 +15,6 @@ final class ReservationType extends Enum
 {
     const Completed = 'completed';
     const Canceled = 'canceled';
-    const Rejected = 'rejected';
+    const ReadyForAction = 'ready_for_action';
     const WaitingForPayment = 'waiting_for_payment';
-    const WaitingForConfirmation = 'waiting_for_confirmation';
-    const WaitingForRepayment = 'waiting_for_repayment';
 }

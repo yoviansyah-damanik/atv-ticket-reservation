@@ -14,7 +14,5 @@ use BenSampo\Enum\Enum;
 final class PaymentType extends Enum
 {
     const PaidOff = 'paid_off';
-    const DownPayment = 'down_payment';
-    const Rejected = 'rejected';
-    const WaitingForConfirmation = 'wait_for_confirmation';
+    const WaitingForConfirmation = 'waiting_for_confirmation';
 }

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('reservation_id')
+            $table->char('reservation_id', 16)
                 ->references('id')
                 ->on('reservations')
                 ->cascadeOnDelete();
@@ -22,9 +22,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('payment_vendors')
                 ->cascadeOnDelete();
-            $table->string('evidence')->nullable();
-            $table->double('paid');
-            $table->double('debt')->default(0);
+            $table->text('proof_of_payment')->nullable();
             $table->enum('status', PaymentType::getValues())
                 ->default(PaymentType::WaitingForConfirmation);
             $table->timestamps();

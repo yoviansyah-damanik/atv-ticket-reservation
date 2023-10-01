@@ -13,20 +13,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->char('id', 16)->primary();
             $table->foreignId('user_id')
                 ->references('id')
                 ->on('users')
                 ->cascadeOnDelete();
+            $table->string('orderer_name');
             $table->foreignId('verifier_id')
-                ->references('id')
-                ->on('users')
-                ->cascadeOnDelete()
-                ->nullable();
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnDelete();
             $table->date('date');
             $table->time('time')->nullable();
             $table->enum('status', ReservationType::getValues())
-                ->default(ReservationType::WaitingForConfirmation);
+                ->default(ReservationType::WaitingForPayment);
             $table->timestamps();
         });
     }

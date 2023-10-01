@@ -2,20 +2,31 @@
     <div class="container py-5">
         <div class="row g-5">
             <div class="col-lg-3 col-md-6">
-                <h4 class="text-primary mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA
+                <h4 class="text-primary mb-4">{{ __('Contact Us') }}</h4>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>
+                    Depan SMA Negeri 8 Kota Padangsidimpuan dan SMK Negeri 4 Kota
+                    Padangsidimpuan, Perkebunan PTPN 3 Tangsi Tengah, Pijorkoling, Kec. Padangsidimpuan Tenggara, Kota
+                    Padangsidimpuan
                 </p>
-                <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>info@example.com</p>
+                <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>
+                    <a href="tel:081360097257">
+                        +62 813 6009 7257
+                    </a>
+                    /
+                    <a href="tel:081370970921">
+                        +62 813 7097 0921
+                    </a>
+                </p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>
+                    <a href="mailto:atvpadangsidimpuan@gmail.com">atvpadangsidimpuan@gmail.com</a>
+                </p>
                 <div class="d-flex pt-3">
-                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href="#"><i
                             class="fab fa-twitter"></i></a>
-                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href="#"><i
                             class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href="#"><i
                             class="fab fa-youtube"></i></a>
-                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
-                            class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">

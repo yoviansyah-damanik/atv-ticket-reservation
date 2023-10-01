@@ -12,6 +12,7 @@
     <link href="{{ asset('backend-assets/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('backend-assets/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('backend-assets/css/demo.min.css?1684106062') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
     @livewireStyles
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -26,7 +27,8 @@
     </style>
 </head>
 
-<body>
+<body @if (!empty($layout) && $layout == 'fluid') class="layout-fluid" @endif>
+    @include('sweetalert::alert')
     <script src="{{ asset('backend-assets/js/demo-theme.min.js?1684106062') }}"></script>
     <div class="page">
         @include('backend.partials.navbar')

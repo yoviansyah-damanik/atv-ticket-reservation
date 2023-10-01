@@ -5,12 +5,14 @@ use App\Http\Controllers\Backend\HomeController;
 use App\Http\Controllers\Backend\UnitController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\ReportController;
+use App\Http\Controllers\Backend\AccountController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Backend\ReservationController;
 use App\Http\Controllers\Backend\PaymentVendorController;
+use App\Http\Controllers\Backend\ScheduleController;
 
-Route::middleware('auth', 'role:Administrator|Finance|Guide|Owner')
+Route::middleware('auth', 'role:Administrator')
     ->as('dashboard.')
     ->prefix('dashboard')
     ->group(function () {
@@ -33,40 +35,20 @@ Route::middleware('auth', 'role:Administrator|Finance|Guide|Owner')
         Route::controller(ReservationController::class)
             ->group(function () {
                 Route::get('/reservation', 'index')->name('reservation');
-                Route::as('reservation')
-                    ->prefix('reservation')
-                    ->group(function () {
-                        Route::get('/create', 'create')
-                            ->name('.create');
-                        Route::post('/store', 'store')
-                            ->name('.store');
-                        Route::get('/edit/{id}', 'edit')
-                            ->name('.edit');
-                        Route::put('/update/{id}', 'update')
-                            ->name('.update');
-                    });
+                Route::get('/reservation/{reservation:id}', 'show')->name('reservation.show');
+                Route::put('/reservation/{reservation:id}/cancel', 'cancel')->name('reservation.cancel');
+                Route::put('/reservation/{reservation:id}/confirmation', 'confirmation')->name('reservation.confirmation');
+                Route::put('/reservation/{reservation:id}/confirm-payment', 'confirm_payment')->name('reservation.confirm-payment');
+                Route::put('/reservation/{reservation:id}/set-unit', 'set_unit')->name('reservation.set-unit');
             });
 
+        // ACCOUNT CONTROLLER
+        Route::get('/account', [AccountController::class, 'index'])->name('account');
 
-        // PAYMENT CONTROLLER
-        Route::controller(PaymentController::class)
-            ->group(function () {
-                Route::get('/payment', 'index')->name('payment');
-                Route::as('payment')
-                    ->prefix('payment')
-                    ->group(function () {
-                        Route::get('/create', 'create')
-                            ->name('.create');
-                        Route::post('/store', 'store')
-                            ->name('.store');
-                        Route::get('/edit/{id}', 'edit')
-                            ->name('.edit');
-                        Route::put('/update/{id}', 'update')
-                            ->name('.update');
-                    });
-            });
+        // SCHEDULE
+        Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 
-        // PAYMENT CONTROLLER
+        // REPORT CONTROLLER
         Route::controller(ReportController::class)
             ->group(function () {
                 Route::as('report')

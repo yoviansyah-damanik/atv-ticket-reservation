@@ -14,7 +14,5 @@ use BenSampo\Enum\Enum;
 final class UnitType extends Enum
 {
     const Ready = 'ready';
-    const Used = 'used';
-    const InRepair = 'in_repair';
-    const Expired = 'expired';
+    const Broken = 'broken';
 }

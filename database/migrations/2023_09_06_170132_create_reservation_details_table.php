@@ -12,15 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservation_details', function (Blueprint $table) {
-            $table->foreignUuid('reservation_id')
+            $table->id();
+            $table->char('reservation_id', 16)
                 ->references('id')
                 ->on('reservations')
                 ->cascadeOnDelete();
-            $table->foreignId('unit_id')
-                ->references('id')
-                ->on('units')
-                ->cascadeOnDelete()
-                ->nullable();
             $table->foreignId('package_id')
                 ->references('id')
                 ->on('packages')

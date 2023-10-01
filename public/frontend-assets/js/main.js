@@ -54,12 +54,12 @@
     })
 
 
-    // Product carousel
-    $(".product-carousel").owlCarousel({
+    // Unit carousel
+    $(".unit-carousel").owlCarousel({
         autoplay: true,
         smartSpeed: 1000,
         margin: 25,
-        loop: true,
+        loop: false,
         center: true,
         dots: false,
         nav: true,

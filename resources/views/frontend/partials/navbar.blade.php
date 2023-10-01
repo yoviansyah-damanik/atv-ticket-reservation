@@ -9,14 +9,27 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="ps-lg-4 order-2">
-                <a href="{{ route('reservation') }}" class="btn btn-danger btn-book text-uppercase px-4 py-2 me-2">
-                    <span class="d-none d-lg-block">
-                        {{ __('Book Now') }}
-                    </span>
-                    <span class="d-block d-lg-none">
-                        <i class="bi bi-journal-arrow-up"></i>
-                    </span>
-                </a>
+                @if (Auth::check() && Auth::user()->roleName == 'Administrator')
+                    <a href="{{ route('dashboard.home') }}"
+                        class="btn btn-danger btn-book text-uppercase px-4 py-2 me-2">
+                        <span class="d-none d-lg-block">
+                            {{ __('Dashboard') }}
+                        </span>
+                        <span class="d-block d-lg-none">
+                            <i class="bi bi-fire"></i>
+                        </span>
+                    </a>
+                @else
+                    <a href="{{ route('reservation') }}" class="btn btn-danger btn-book text-uppercase px-4 py-2 me-2">
+                        <span class="d-none d-lg-block">
+                            {{ __('Book Now') }}
+                        </span>
+                        <span class="d-block d-lg-none">
+                            <i class="bi bi-journal-arrow-up"></i>
+                        </span>
+                    </a>
+                @endif
+
                 @auth
                     <div class="dropdown d-inline-block dropdown-account">
                         <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -35,18 +48,17 @@
                             </li>
                             @if (Auth::user()->isUser)
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('account.profile') }}">
-                                        <i class="bi bi-person"></i>
-                                        {{ __('Profile') }}
-                                    </a>
-                                </li>
-                                <li>
                                     <a class="dropdown-item" href="{{ route('account.history') }}">
                                         <i class="bi bi-journal-bookmark"></i>
-                                        <span>
-                                            <span class="badge bg-success">1</span>
-                                            <span class="badge bg-warning">1</span>
-                                            <span class="badge bg-danger">1</span>
+                                        <span class="small">
+                                            <span
+                                                class="badge bg-success">{{ Auth::user()->reservations()->completedStatus()->count() }}</span>
+                                            <span
+                                                class="badge bg-warning">{{ Auth::user()->reservations()->waitingStatus()->count() }}</span>
+                                            <span
+                                                class="badge bg-info">{{ Auth::user()->reservations()->readyStatus()->count() }}</span>
+                                            <span
+                                                class="badge bg-danger">{{ Auth::user()->reservations()->canceledStatus()->count() }}</span>
                                         </span>
                                         {{ __('History') }}
                                     </a>
@@ -54,7 +66,7 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('account') }}">
                                         <i class="bi bi-arrow-up-right-square"></i>
-                                        {{ __('Account') }}
+                                        {{ __('Setting') }}
                                     </a>
                                 </li>
                             @else
@@ -65,9 +77,6 @@
                                     </a>
                                 </li>
                             @endif
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <li>
                                 <form action="{{ route('logout') }}" method="post">
                                     @csrf
@@ -80,9 +89,9 @@
                         </ul>
                     </div>
                 @else
-                    <a class="btn btn-primary text-uppercase px-4 py-2" href="{{ route('login') }}">
+                    <a class="btn btn-primary text-uppercase px-4 py-2" href="{{ route('register') }}">
                         <span class="d-none d-lg-inline">
-                            {{ __('Log In') }}
+                            {{ __('Register') }}
                         </span>
                         <span class="d-inline d-lg-none">
                             <i class="bi bi-box-arrow-in-right"></i>

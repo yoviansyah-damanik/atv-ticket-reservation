@@ -25,14 +25,15 @@ Route::middleware('auth', 'role:User')
         // ACCOUNT CONTROLLER
         Route::controller(AccountController::class)
             ->group(function () {
-                Route::get('/account')->name('account');
+                Route::get('/account', 'index')->name('account');
                 Route::prefix('account')
                     ->as('account.')
                     ->group(function () {
-                        Route::get('/profile', 'profile')->name('profile');
                         Route::put('/profile', 'update_profile')->name('profile.update');
                         Route::get('/history', 'history')->name('history');
                         Route::get('/history/{reservation:id}', 'show_history')->name('history.show');
+                        Route::put('/history/{reservation:id}', 'update_payment')->name('history.show.payment');
+                        Route::put('/history/{reservation:id}/cancel', 'cancel_reservation')->name('history.show.cancel');
                     });
             });
     });

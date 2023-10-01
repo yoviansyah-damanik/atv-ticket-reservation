@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserStatusType;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
@@ -33,6 +34,12 @@ class AuthController extends Controller
 
         if ($user) {
             if (Hash::check($password, $user->password)) {
+                if ($user->status == UserStatusType::Blocked) {
+                    Alert::toast(__('Your account has been blocked. Please contact the administrator for further information.'), 'error');
+                    return back()
+                        ->withInput();
+                }
+
                 Auth::login($user, $request->has('remember_me'));
 
                 $request->session()

@@ -30,6 +30,7 @@ class Index extends Component
     {
         $this->resetPage();
     }
+
     public function delete_item($id)
     {
         $this->selection_id = $id;
