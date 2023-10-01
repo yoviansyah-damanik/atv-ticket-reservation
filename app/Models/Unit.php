@@ -16,7 +16,7 @@ class Unit extends Model
     protected function imagePath(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->image ? asset('public/' . $this->image) : asset('branding-assets/img/unit-default.png')
+            get: fn () => $this->image ? asset('storage/' . $this->image) : asset('branding-assets/img/unit-default.png')
         );
     }
 
