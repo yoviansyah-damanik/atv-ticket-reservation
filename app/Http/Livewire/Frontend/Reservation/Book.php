@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Frontend\Reservation;
 
+use App\Enums\MailType;
 use Exception;
 use Throwable;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Package;
 use Livewire\Component;
 use App\Models\Reservation;
@@ -12,12 +14,14 @@ use Illuminate\Validation\Rule;
 use App\Models\ReservationDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Jobs\SendReservationNotificationJob;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Book extends Component
 {
     use LivewireAlert;
+
     public $times = [];
     public $selected_package = [];
     public $orderer_name = '';
@@ -117,6 +121,11 @@ class Book extends Component
                 $new_detail_reservation->price = $item['price'];
                 $new_detail_reservation->save();
             }
+
+            $reservation = $new_reservation->refresh();
+            $email = User::role('Administrator')->get()->pluck('email')->toArray();
+            dispatch(new SendReservationNotificationJob($reservation, $email, MailType::ReservationNotification));
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::ClientReservationNotification));
 
             DB::commit();
             Alert::success(__('Successfully!'), __('Your reservation has been successfully made. Please confirm your payment if you use an electronic payment platform.'));

@@ -4,11 +4,13 @@ namespace App\Http\Livewire\Frontend\Account\Reservation;
 
 use Exception;
 use Throwable;
+use App\Enums\MailType;
 use Livewire\Component;
 use App\Models\Reservation;
 use Livewire\WithPagination;
 use App\Enums\ReservationType;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendReservationNotificationJob;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
@@ -57,6 +59,8 @@ class Index extends Component
             $reservation = Reservation::findOrFail($this->selection_id);
 
             $reservation->update(['status' => ReservationType::Canceled]);
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::CancelReservation));
+
             $this->selection_id = null;
             $this->alert(
                 'success',

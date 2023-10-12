@@ -75,9 +75,11 @@ class HomeController extends Controller
                 }),
                 'percentage' => $reservations->sum(function ($s) use ($q) {
                     return $s->unit_usages()->where('unit_id', $q->id)->count();
-                }) /  $reservations->sum(function ($s) use ($q) {
-                    return $s->unit_usages->count();
-                }) * 100
+                }) > 0 ? $reservations->sum(function ($s) use ($q) {
+                    return $s->unit_usages()->where('unit_id', $q->id)->count();
+                })  /  $reservations->sum(function ($s) use ($q) {
+                    return $s->unit_usages->count() ?? 1;
+                }) * 100 : 0
             ];
         });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use Exception;
 use Throwable;
 use App\Models\User;
+use App\Enums\MailType;
 use App\Models\Payment;
 use Illuminate\View\View;
 use App\Models\Reservation;
@@ -17,6 +18,7 @@ use App\Http\Requests\AccountRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\PasswordRequest;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Jobs\SendReservationNotificationJob;
 use App\Http\Requests\Reservation\PaymentRequest;
 
 class AccountController extends Controller
@@ -53,12 +55,15 @@ class AccountController extends Controller
                     'reservation_id' => $reservation->id
                 ]
             );
+
             $new_payment->payment_vendor_id = $request->selected_payment_vendor;
             if ($request->proof_of_payment) {
                 $filename = $request->proof_of_payment->store('proof-of-payment', 'public');
                 $new_payment->proof_of_payment = $filename;
             }
             $new_payment->save();
+
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::ReservationPayment));
 
             Alert::success(__('Successfully!'), __('Your payment has been successfully updated. Please wait for confirmation from the Administrator for a few moments.'));
             return back();
@@ -75,6 +80,8 @@ class AccountController extends Controller
     {
         try {
             $reservation->update(['status' => ReservationType::Canceled]);
+
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::CancelReservation));
 
             Alert::success(__('Successfully!'), __('The :feature was successfully updated.', ['feature' => __('Reservation')]));
             return back();

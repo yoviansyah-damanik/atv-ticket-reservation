@@ -9,8 +9,14 @@ use App\Http\Controllers\Frontend\ReservationController;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 
-Route::get('/about', [AboutController::class, 'index'])
-    ->name('about');
+Route::get('/tes', function () {
+    $reservation = App\Models\Reservation::firstOrFail();
+    $email = App\Models\User::role('Administrator')->get()->pluck('email')->toArray();
+
+    dispatch(new App\Jobs\SendReservationNotificationJob($reservation, $email, App\Enums\MailType::ReservationNotification));
+    dispatch(new App\Jobs\SendReservationNotificationJob($reservation, $reservation->user->email, App\Enums\MailType::ClientReservationNotification));
+    return view('emails.send-reservation-notification', compact('reservation'));
+});
 
 Route::middleware('auth', 'role:User')
     ->group(function () {

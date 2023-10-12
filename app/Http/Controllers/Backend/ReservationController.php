@@ -5,17 +5,19 @@ namespace App\Http\Controllers\Backend;
 use Exception;
 use Throwable;
 use App\Models\Unit;
+use App\Enums\MailType;
 use App\Enums\UnitType;
 use App\Models\Payment;
+use App\Models\UnitUsage;
 use App\Enums\PaymentType;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Enums\ReservationType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Reservation\UnitReservationRequest;
-use App\Models\UnitUsage;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Jobs\SendReservationNotificationJob;
+use App\Http\Requests\Reservation\UnitReservationRequest;
 
 class ReservationController extends Controller
 {
@@ -46,6 +48,8 @@ class ReservationController extends Controller
                     'status' => PaymentType::PaidOff
                 ]);
 
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::ReservationPayment));
+
             DB::commit();
             Alert::toast(__('The :feature was successfully updated.', ['feature' => __('Reservation')]), 'success');
             return back();
@@ -67,6 +71,8 @@ class ReservationController extends Controller
             $reservation->update(['status' => ReservationType::Canceled]);
             if ($reservation->payment)
                 $reservation->payment->update(['status' => PaymentType::WaitingForConfirmation]);
+
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::CancelReservation));
 
             DB::commit();
             Alert::toast(__('The :feature was successfully updated.', ['feature' => __('Reservation')]), 'success');
@@ -97,6 +103,7 @@ class ReservationController extends Controller
 
             $reservation->update(['status' => ReservationType::Completed]);
 
+            dispatch(new SendReservationNotificationJob($reservation, $reservation->user->email, MailType::ReservationAccepted));
             Alert::toast(__('The :feature was successfully updated.', ['feature' => __('Reservation')]), 'success');
         } catch (Exception $e) {
             Alert::toast($e->getMessage(), 'warning');
