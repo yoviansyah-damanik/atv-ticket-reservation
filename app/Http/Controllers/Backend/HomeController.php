@@ -40,7 +40,7 @@ class HomeController extends Controller
             ->sortByDesc('updated_at')
             ->take(10);
 
-        $percentage_of_reservation_complete = $reservations->count() > 0 ? ($completed_count + $ready_for_action_count) / $reservations->count() * 100 : 0;
+        $percentage_of_reservation_complete = $reservations->count() > 0 && ($completed_count + $ready_for_action_count) > 0 ? ($completed_count + $ready_for_action_count) / $reservations->count() * 100 : 0;
 
         $revenue = collect(range(1, 12))->map(function ($q) use ($completed_reservation) {
             $start_of_month = Carbon::createFromFormat('m-Y', $q . '-' . $this->year)->startOfMonth();
