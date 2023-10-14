@@ -37,12 +37,15 @@ class Book extends Component
         $this->time = $this->times[0];
         $this->orderer_name = Auth::user()->name;
         $this->packages = Package::get();
+
+        $this->total_package = 0;
+        $this->total_payment = 0;
     }
 
     public function render()
     {
         $this->selected_package = collect($this->selected_package)
-            ->filter(fn ($item, $key) => $item['status'] == true);
+            ->where('status', true);
 
         $selected_keys = $this->selected_package
             ->keys();
@@ -51,11 +54,14 @@ class Book extends Component
             ->whereIn('id', $selected_keys);
 
         $this->selected_package = $this->selected_package
-            ->map(function ($item, $key) use ($selected_packages_show) {
+            ->mapWithKeys(function ($item, $key) use ($selected_packages_show) {
                 return [
-                    'status' => $item['status'],
-                    'amount' => $item['amount'] ?? 1,
-                    'price' => $selected_packages_show->where('id', $key)->first()->price,
+                    $key => [
+                        'id' => $key,
+                        'status' => $item['status'],
+                        'amount' => !empty($item['amount']) ? (intval($item['amount']) > 0 ? $item['amount'] : 1) : 1,
+                        'price' => $selected_packages_show->where('id', $key)->first()->price,
+                    ]
                 ];
             });
 
@@ -67,6 +73,36 @@ class Book extends Component
             'packages' => $this->packages,
             'selected_packages_show' => $selected_packages_show
         ]);
+    }
+
+    public function increment($id)
+    {
+        if ($this->selected_package[$id]['amount'] + 1 > 10)
+            return $this->alert('warning', __('Maximum 10 packages'));
+
+        $this->selected_package = collect($this->selected_package)
+            ->map(function ($q) use ($id) {
+                if ($q['id'] == $id)
+                    return [...$q, 'amount' => $q['amount'] + 1];
+
+                return $q;
+            });
+    }
+
+    public function decrement($id)
+    {
+        if ($this->selected_package[$id]['amount'] - 1 <= 0) {
+            unset($this->selected_package[$id]);
+            return $this->alert('warning', __('Package successfully deleted'));
+        }
+
+        $this->selected_package = collect($this->selected_package)
+            ->map(function ($q) use ($id) {
+                if ($q['id'] == $id)
+                    return [...$q, 'amount' => $q['amount'] - 1];
+
+                return $q;
+            });
     }
 
     public function rules(): array
@@ -94,11 +130,6 @@ class Book extends Component
             'selected_package' => __('Selected Package'),
             'selected_package.*.amount' => __('Number of packages')
         ];
-    }
-
-    public function updated($attribute)
-    {
-        $this->validateOnly($attribute);
     }
 
     public function store_reservation()

@@ -103,9 +103,17 @@
                         <td colspan=2>{{ $item->title }} <span
                                 class="fst-italic small">{{ '@' . PriceHelper::idr($item->price, 0, true) }}</span>
                         </td>
-                        <td width=70px>
-                            <input type="number" class="form-control text-center border-0  border-bottom"
-                                wire:model.live='selected_package.{{ $item->id }}.amount'>
+                        <td width=120px>
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-sm btn-danger p-0"
+                                    style="width:50px !important; aspect-ratio:1/1;"
+                                    wire:click='decrement({{ $item->id }})'>-</button>
+                                <span
+                                    class="w-100 text-center bg-white py-1">{{ $selected_package[$item->id]['amount'] }}</span>
+                                <button class="btn btn-sm btn-danger p-0"
+                                    style="width:50px !important; aspect-ratio:1/1;"
+                                    wire:click='increment({{ $item->id }})'>+</button>
+                            </div>
                         </td>
                     </tr>
                 @empty
