@@ -33,11 +33,9 @@ class Book extends Component
     public function mount()
     {
         $this->times = ['10:00', '10:30', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
-        // $this->date = Carbon::now()->addDays(1)->format('d/m/Y');
         $this->time = $this->times[0];
         $this->orderer_name = Auth::user()->name;
         $this->packages = Package::get();
-
         $this->total_package = 0;
         $this->total_payment = 0;
     }
@@ -45,22 +43,19 @@ class Book extends Component
     public function render()
     {
         $this->selected_package = collect($this->selected_package)
-            ->where('status', true);
+            ->filter(fn ($q) => $q == true);
 
-        $selected_keys = $this->selected_package
-            ->keys();
-
-        $selected_packages_show = collect($this->packages)
-            ->whereIn('id', $selected_keys);
+        $selected_packages_show = $this->packages
+            ->filter(fn ($item, $key) => in_array($key, collect($this->selected_package)->keys()->toArray()))
+            ->map(fn ($item, $key) => [...$item->toArray(), 'selected_id' => $key]);
 
         $this->selected_package = $this->selected_package
             ->mapWithKeys(function ($item, $key) use ($selected_packages_show) {
                 return [
                     $key => [
-                        'id' => $key,
-                        'status' => $item['status'],
+                        'id' => $selected_packages_show->where('selected_id', $key)->first()['id'],
                         'amount' => !empty($item['amount']) ? (intval($item['amount']) > 0 ? $item['amount'] : 1) : 1,
-                        'price' => $selected_packages_show->where('id', $key)->first()->price,
+                        'price' => $selected_packages_show->where('selected_id', $key)->first()['price'],
                     ]
                 ];
             });
@@ -69,8 +64,6 @@ class Book extends Component
         $this->total_payment = $this->selected_package->sum(fn ($item) => $item['amount'] * $item['price']);
 
         return view('livewire.frontend.reservation.book', [
-            'times' => $this->times,
-            'packages' => $this->packages,
             'selected_packages_show' => $selected_packages_show
         ]);
     }
@@ -81,11 +74,11 @@ class Book extends Component
             return $this->alert('warning', __('Maximum 10 packages'));
 
         $this->selected_package = collect($this->selected_package)
-            ->map(function ($q) use ($id) {
-                if ($q['id'] == $id)
-                    return [...$q, 'amount' => $q['amount'] + 1];
+            ->map(function ($item, $key) use ($id) {
+                if ($key == $id)
+                    return [...$item, 'amount' => $item['amount'] + 1];
 
-                return $q;
+                return $item;
             });
     }
 
@@ -97,11 +90,11 @@ class Book extends Component
         }
 
         $this->selected_package = collect($this->selected_package)
-            ->map(function ($q) use ($id) {
-                if ($q['id'] == $id)
-                    return [...$q, 'amount' => $q['amount'] - 1];
+            ->map(function ($item, $key) use ($id) {
+                if ($key == $id)
+                    return [...$item, 'amount' => $item['amount'] - 1];
 
-                return $q;
+                return $item;
             });
     }
 
@@ -115,7 +108,6 @@ class Book extends Component
                 Rule::in($this->times)
             ],
             'selected_package' => 'required|array',
-            'selected_package.*.status' => 'required|boolean',
             'selected_package.*.price' => 'sometimes|required|numeric',
             'selected_package.*.amount' => 'sometimes|required|numeric|min:1'
         ];
@@ -147,7 +139,7 @@ class Book extends Component
             foreach ($this->selected_package as $key => $item) {
                 $new_detail_reservation = new ReservationDetail();
                 $new_detail_reservation->reservation_id = $new_reservation->id;
-                $new_detail_reservation->package_id = $key;
+                $new_detail_reservation->package_id = $item['id'];
                 $new_detail_reservation->amount = $item['amount'];
                 $new_detail_reservation->price = $item['price'];
                 $new_detail_reservation->save();

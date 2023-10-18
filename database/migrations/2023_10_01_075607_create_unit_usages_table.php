@@ -16,7 +16,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('reservations')
                 ->cascadeOnDelete();
-            $table->foreignId('unit_id')
+            $table->char('unit_id', 9)
                 ->references('id')
                 ->on('units')
                 ->cascadeOnDelete();

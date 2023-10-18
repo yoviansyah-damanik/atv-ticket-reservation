@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,14 @@ class PaymentVendor extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-
+    public $incrementing = false;
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->id = 'PV' . Carbon::now()->year . sprintf('%04d', (int) self::count() + 1);
+        });
+    }
     protected function imagePath(): Attribute
     {
         return new Attribute(

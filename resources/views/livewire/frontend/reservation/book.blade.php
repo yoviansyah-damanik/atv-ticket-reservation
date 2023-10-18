@@ -51,12 +51,12 @@
             <div class="mb-3">
                 <h6>{{ __('Select the package you want to order.') }}</h6>
                 <div class="row">
-                    @foreach ($packages as $package)
+                    @foreach ($packages as $idx => $package)
                         <div class="col-lg-3 col-md-4 col-6">
                             <div class="package-checkbox">
-                                <input type="checkbox" id="package-{{ $package->id }}"
-                                    wire:model.live='selected_package.{{ $package->id }}.status'>
-                                <label for="package-{{ $package->id }}">
+                                <input type="checkbox" id="package-{{ $idx }}"
+                                    wire:model.live='selected_package.{{ $idx }}'>
+                                <label for="package-{{ $idx }}">
                                     <div class="img-box">
                                         <img src="{{ $package->image_path }}" alt="Package Image">
                                     </div>
@@ -100,19 +100,21 @@
                 @forelse ($selected_packages_show as $item)
                     <tr>
                         <td class="text-center" width=30px>{{ $loop->iteration }}</td>
-                        <td colspan=2>{{ $item->title }} <span
-                                class="fst-italic small">{{ '@' . PriceHelper::idr($item->price, 0, true) }}</span>
+                        <td colspan=2>{{ $item['title'] }} <span
+                                class="fst-italic small">{{ '@' . PriceHelper::idr($item['price'], 0, true) }}</span>
                         </td>
                         <td width=120px>
                             <div class="d-flex align-items-center">
                                 <button class="btn btn-sm btn-danger p-0"
                                     style="width:50px !important; aspect-ratio:1/1;"
-                                    wire:click='decrement({{ $item->id }})'>-</button>
+                                    wire:click='decrement({{ $item['selected_id'] }})' wire:loading.attr='disabled'
+                                    wire:target='increment,decrement'>-</button>
                                 <span
-                                    class="w-100 text-center bg-white py-1">{{ $selected_package[$item->id]['amount'] }}</span>
+                                    class="w-100 text-center bg-white py-1">{{ $selected_package[$item['selected_id']]['amount'] }}</span>
                                 <button class="btn btn-sm btn-danger p-0"
                                     style="width:50px !important; aspect-ratio:1/1;"
-                                    wire:click='increment({{ $item->id }})'>+</button>
+                                    wire:click='increment({{ $item['selected_id'] }})' wire:loading.attr='disabled'
+                                    wire:target='increment,decrement'>+</button>
                             </div>
                         </td>
                     </tr>
@@ -132,7 +134,6 @@
                     <th colspan=2 class="text-end">{{ PriceHelper::idr($total_payment, 0, true) }}</th>
                 </tr>
             </table>
-
             @error('selected_package')
                 <div class="mt-1 small text-danger">
                     {{ $message }}
